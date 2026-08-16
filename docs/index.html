@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telepresence Demo</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: #111;
+    color: #eee;
+  }
+  h1 { font-size: 1.8rem; }
+  #status { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+</style>
+</head>
+<body>
+  <h1 id="title">Loading title…</h1>
+  <div id="status"></div>
+
+  <script>
+    const API_URL = "http://localhost:8080/";
+
+    async function loadTitle() {
+      const titleEl = document.getElementById("title");
+      const statusEl = document.getElementById("status");
+      try {
+        const res = await fetch(API_URL);
+        const text = await res.text();
+        titleEl.textContent = text.trim();
+        document.title = text.trim();
+        statusEl.textContent = `fetched from ${API_URL}`;
+      } catch (err) {
+        titleEl.textContent = "Hello World (API unreachable)";
+        statusEl.textContent = `Could not reach ${API_URL} — is the app running locally? (${err.message})`;
+      }
+    }
+
+    loadTitle();
+  </script>
+</body>
+</html>
